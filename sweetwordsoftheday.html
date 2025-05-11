@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+  <title>Sweet Words of The Day</title>
+  <style>
+    /* Reset and base */
+    * {
+      box-sizing: border-box;
+    }
+    body, html {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #fcefee 0%, #fef9f9 100%);
+      color: #5a3e3e;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      max-height: 600px;
+      max-width: 350px;
+      user-select: none;
+      padding: 20px;
+    }
+    .container {
+      background: #fff0f3;
+      border-radius: 24px;
+      padding: 30px 25px;
+      box-shadow: 0 8px 20px rgba(228, 169, 177, 0.6);
+      max-width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+    h1 {
+      margin: 0 0 25px 0;
+      font-weight: 800;
+      font-size: 1.8rem;
+      color: #a8515d;
+      letter-spacing: 1.5px;
+      user-select: text;
+    }
+    input[type="text"] {
+      width: 100%;
+      padding: 12px 15px;
+      border-radius: 12px;
+      border: 2px solid #dca7ae;
+      font-size: 1rem;
+      outline: none;
+      transition: border-color 0.3s ease;
+      margin-bottom: 20px;
+      font-family: inherit;
+      color: #5a3e3e;
+    }
+    input[type="text"]:focus {
+      border-color: #a8515d;
+      background-color: #f9dce0;
+    }
+    #sentence {
+      font-size: 1.3rem;
+      font-style: italic;
+      line-height: 1.4;
+      min-height: 80px;
+      margin-bottom: 30px;
+      user-select: text;
+      color: #7e5157;
+      padding: 0 8px;
+    }
+    button {
+      background: linear-gradient(90deg, #efa6ad, #b6515a);
+      color: #fff;
+      border: none;
+      border-radius: 16px;
+      padding: 14px 28px;
+      font-weight: 700;
+      font-size: 1.1rem;
+      cursor: pointer;
+      box-shadow: 0 6px 18px rgba(234, 119, 131, 0.8);
+      transition: background 0.4s ease;
+      user-select: none;
+      width: 100%;
+      max-width: 280px;
+    }
+    button:hover,
+    button:focus {
+      background: linear-gradient(90deg, #b6515a, #efa6ad);
+    }
+    @media (max-width: 400px) {
+      h1 {
+        font-size: 1.5rem;
+      }
+      #sentence {
+        font-size: 1.2rem;
+        min-height: 70px;
+        margin-bottom: 20px;
+      }
+      button {
+        font-size: 1rem;
+        padding: 12px 24px;
+        max-width: 100%;
+      }
+      input[type="text"] {
+        font-size: 0.95rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="container" role="main" aria-live="polite">
+    <h1>Sweet Words of The Day</h1>
+    <input type="text" id="nameInput" placeholder="Enter your name (optional)" aria-label="Enter your name"/>
+    <div id="sentence" tabindex="0" aria-live="polite" aria-atomic="true">Loading your sweet word...</div>
+    <button id="changeBtn" aria-label="Change sweet saying">Change Sentence</button>
+  </main>
+
+  <script>
+    const sentences = [
+      "You deserve to be happy today.",
+      "May your day be filled with sunshine and smiles.",
+      "You are capable of amazing things.",
+      "Believe in yourself and all that you are.",
+      "Kindness is your superpower.",
+      "Take today and make it yours.",
+      "You matter and your dreams matter.",
+      "Let your light shine bright.",
+      "Every day is a new beginning.",
+      "You are stronger than you think.",
+      "May you find joy in the little things.",
+      "Your smile can change someone's day.",
+      "Stay positive, work hard, and make it happen.",
+      "You are loveable and loved.",
+      "Spread love wherever you go.",
+      "Dream big and dare to fail.",
+      "Embrace the glorious mess that you are.",
+      "Be brave and keep moving forward.",
+      "Happiness looks great on you.",
+      "You have a beautiful heart."
+    ];
+
+    const sentenceElem = document.getElementById('sentence');
+    const changeBtn = document.getElementById('changeBtn');
+    const nameInput = document.getElementById('nameInput');
+
+    let currentIndex = -1;
+
+    function getRandomIndex() {
+      let idx;
+      do {
+        idx = Math.floor(Math.random() * sentences.length);
+      } while (idx === currentIndex);
+      return idx;
+    }
+
+    function getSentenceWithName(name, sentence) {
+      const trimmedName = name.trim();
+      if (trimmedName) {
+        return `For you, ${trimmedName}: ${sentence}`;
+      }
+      return sentence;
+    }
+
+    function showSentence() {
+      const idx = getRandomIndex();
+      const name = nameInput.value;
+      const fullSentence = getSentenceWithName(name, sentences[idx]);
+
+      sentenceElem.textContent = fullSentence;
+      currentIndex = idx;
+    }
+
+    changeBtn.addEventListener('click', () => {
+      showSentence();
+      sentenceElem.focus();
+    });
+
+    window.onload = () => {
+      showSentence();
+    };
+
+    // Optional: Update sentence live if the user edits the name input
+    nameInput.addEventListener('input', () => {
+      // Refresh the current sentence with the new name if any
+      if (currentIndex !== -1) {
+        const fullSentence = getSentenceWithName(nameInput.value, sentences[currentIndex]);
+        sentenceElem.textContent = fullSentence;
+      }
+    });
+  </script>
+</body>
+</html>
